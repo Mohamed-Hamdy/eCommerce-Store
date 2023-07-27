@@ -16,6 +16,7 @@
 </section>
 <!-- Main content -->
 <section class="content">
+    
     <!-- Default box -->
     <div class="container-fluid">
         <form action="" method="post" id="productForm" name="productForm">
@@ -76,7 +77,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="description">Description</label>
-                                <input type="text" min="50"  value="{{$product->description}}" name="description" id="description" class="form-control" placeholder="description" required>
+                                <input type="text" min="50" value="{{$product->description}}" name="description" id="description" class="form-control" placeholder="description" required>
                                 <p></p>
                             </div>
                         </div>
@@ -99,108 +100,15 @@
 <script>
     $("#productForm").submit(function(event) {
         event.preventDefault();
-        var element = $(this);
-        $("button[type=submit]").prop('disabled', true);
+        var element = $(this); 
         $.ajax({
             url: '{{ route("products.update" , $product->id) }}',
             type: 'put',
             data: element.serializeArray(),
             dataType: 'json',
             success: function(response) {
-                $("button[type=submit]").prop('disabled', false);
-                if (response["status"] == true) {
-
-                    $("#name").removeClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html("");
-
-                    $("#slug").removeClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html("");
-
-
-                    $("#category").removeClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html("");
-
-                    $("#quantity").removeClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html("");
-
-                    $("#price").removeClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html("");
-
-                    $("#description").removeClass('is-invalid')
-                        .siblings('p')
-                        .addClass('invalid-feedback').html("");
-
-                    window.location.href = "{{route('products.index') }}";
-
-                } else {
-                    var errors = response['errors'];
-                    if (errors['name']) {
-                        $("#name").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['name']);
-                    } else {
-                        $("#name").removeClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['slug']) {
-                        $("#slug").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['slug']);
-                    } else {
-                        $("#slug").removeClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['category']) {
-                        $("#category").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['category']);
-                    } else {
-                        $("#category").removeClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['quantity']) {
-                        $("#quantity").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['quantity']);
-                    } else {
-                        $("#quantity").removeClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['price']) {
-                        $("#price").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['price']);
-                    } else {
-                        $("#price").removeClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['description']) {
-                        $("#description").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['description']);
-                    } else {
-                        $("#description").removeClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html("");
-                    }
-
-                }
-
+                alert("Product Updated Successfully");
+                $("button[type=submit]").prop('disabled', true);
             },
             error: function(jqXHR, exception) {
                 console.log("Something went wrong");

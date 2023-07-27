@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
+
 <section class="content-header">
     <div class="container-fluid my-2">
         <div class="row mb-2">
@@ -16,10 +17,20 @@
 </section>
 <!-- Main content -->
 <section class="content">
+
+    @if($message != 'NULL')
+    <div class="alert alert-info">
+        <strong>Success!</strong> {{ $message}}
+    </div>
+    @else
+        <div></div>
+    @endif
+
     <!-- Default box -->
     <div class="container-fluid">
-        <form action="{{ route('products.store') }}" method="post" >
+        <form action="{{ route('products.store') }}" method="post">
             @csrf
+
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -56,14 +67,14 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="category">category</label>
-                                <input type="text" name="category" id="category" class="form-control" placeholder="Category" required >
+                                <input type="text" name="category" id="category" class="form-control" placeholder="Category" required>
                                 <p></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="quantity">quantity</label>
-                                <input type="number" min="1" name="quantity" id="quantity" class="form-control" placeholder="Quantity Min = 1 " required >
+                                <input type="number" min="1" name="quantity" id="quantity" class="form-control" placeholder="Quantity Min = 1 " required>
                                 <p></p>
                             </div>
                         </div>
@@ -77,7 +88,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="description">Description</label>
-                                <input type="text" min="50" name="description" id="description" class="form-control" placeholder="description" required >
+                                <input type="text" min="50" name="description" id="description" class="form-control" placeholder="description" required>
                                 <p></p>
                             </div>
                         </div>
@@ -108,8 +119,9 @@
             data: element.serializeArray(),
             dataType: 'json',
             success: function(response) {
-            
-            }, error: function(jqXHR, exception) {
+
+            },
+            error: function(jqXHR, exception) {
                 console.log("Something went wrong");
             }
         })

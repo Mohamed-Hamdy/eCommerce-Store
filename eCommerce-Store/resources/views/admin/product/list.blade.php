@@ -19,6 +19,13 @@
     <!-- Default box -->
     <div class="container-fluid">
         @include('admin.message')
+        @if($message != 'NULL')
+        <div class="alert alert-info">
+            <strong>Success!</strong> {{ $message}}
+        </div>
+        @else
+        <div></div>
+        @endif
         <div class="card">
             <form action="" method="get">
                 <div class="card-header">
@@ -131,23 +138,16 @@
         //alert(url);
         //return false;
         //$("button[type=submit]").prop('disabled', true);
-        var xhttp = new XMLHttpRequest();
 
-        if (confirm("Are you sure you want to delete")) {
+        if (confirm("Are you sure you want to delete (please reload page)")) {
             $.ajax({
                 url: newUrl,
                 type: 'delete',
                 data: {},
-                dataType: 'json',
+                dataType: 'json', 
 
-                success: function(response) {
-                    $("button[type=submit]").prop('disabled', false);
-                    if (response["status"]) {
-
-                        window.location.href = "{{route('products.index')}}";
-                        //xhttp.open("GET", "{{route('products.index')}}", true); // Replace "your-url" with the actual URL
-                        //xhttp.send();
-                    }
+                success: function() {
+                    alert("Delete Record Successfully");
                 }
             });
         }

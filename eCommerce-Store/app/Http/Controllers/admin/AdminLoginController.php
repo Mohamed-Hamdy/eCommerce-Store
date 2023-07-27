@@ -38,7 +38,9 @@ class AdminLoginController extends Controller
                     return redirect()->route('admin.dashboard');
                 }else{
                     Auth::guard('admin')->logout();
-                    return redirect()->route('admin.homepage')->with('error', 'Your are not authorized to access admin panel.');
+                    $request->session()->flush('error' , 'Your are not authorized to access admin panel.');
+
+                    return redirect()->route('admin.login')->with('error', 'Your are not authorized to access admin panel.');
                 }
             } else {
                 return redirect()->route('admin.login')->with('error', 'Your Email or Password is incorrect');

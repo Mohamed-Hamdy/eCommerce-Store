@@ -50,9 +50,8 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     Route::group(['middleware' => 'admin.auth'], function () {
-        Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
         
-
+        Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
         // product routes
         Route::get('/products/index', [ProductController::class, 'index'])->name('products.index');
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -61,10 +60,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'delete'])->name('products.delete');
 
-
         Route::get('/cards/index', [CardController::class, 'index'])->name('cards.index');
-
-
         Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout');
 
 

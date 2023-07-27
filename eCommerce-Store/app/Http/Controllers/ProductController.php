@@ -14,8 +14,6 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        
-        
         $products = Product::latest();
         if(!empty($request->get('keyword'))){
             $products = $products->where('name' , 'like','%'.$request->get('keyword').'%');
@@ -23,17 +21,22 @@ class ProductController extends Controller
         $products = $products->paginate(10);
         //$data['products'] = $products;
         $guestRole  = Auth::user()->role;
-        
+
         if($guestRole == 2){
 
             return view('user.product.list', compact('products'));
 
         }else{
-            return view('admin.product.list', compact('products'));
+            $message = 'NULL';
+    
+            Auth::guard('admin')->user();
+            return view('admin.product.list', compact('products' , 'message'));
         }
     }
     public function create(){
-        return view('admin.product.create');
+        $message = 'NULL';
+
+        return view('admin.product.create', compact('message'));
 
     }
     public function store(Request $request){
@@ -55,22 +58,15 @@ class ProductController extends Controller
             $product->price = $request->price;
 
             $product->save();
-
-            $request->session()->flush('success' , 'Product added Successfully');
-            //echo '<script>alert("Product added Successfully");</script>';
-
-            //return redirect()->route('products.index')->with('success', 'Product Create successfully');
-            return redirect()->route('products.index')->with('alert', 'Product added Successfully');
-
-                                  
-        }else {
-            //return redirect()->route('products.create')->with();
-
-            return redirect()->back()->with('alert', $validator->errors());
-
             
+            $message = 'Record Added Successfully';
+            return view('admin.product.create', compact('message'));                                  
+        }else {
+            $message = 'NULL';
+            return view('admin.product.create', compact('message'));
         }
     }
+    
     public function delete($productId , Request $request){
         
         $product = Product::find($productId);
@@ -78,14 +74,16 @@ class ProductController extends Controller
             return redirect()->route('products.index');
         }
         $product->delete();
-        $request->session()->flush('sucess' , 'Product Deleted Successfully');
-        return response()->json(['message' => 'Success' , 'status'=> true]);
+        redirect()->route('products.index');
     }
+
+
     public function edit($productId , Request $request){
         $product = Product::find($productId);
         if(empty($product)){
             return redirect()->route('products.index');
         }
+        
         return view('admin.product.edit',compact('product'));
          
     }
@@ -119,8 +117,8 @@ class ProductController extends Controller
             $product->save();
 
             $request->session()->flush('success' , 'Product Updated Successfully');
-            return response()->json([ 'status'=> true, 'message' => 'Product Updated Successfully' ]);                        
-        }else {
+            return response()->json([ 'status'=> true, 'message' => 'Product Updated Successfully' ]);       
+            }else {
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
